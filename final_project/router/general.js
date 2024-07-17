@@ -54,7 +54,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   const isbnToSearch = req.params.isbn;
 
-  console.log("el isbn a buscar es:" + isbnToSearch)
+  console.log("ISBN ato be search is: " + isbnToSearch)
 
   let findBookByISBN = function (isbnToSearch) {
     for (let key in books) {
@@ -104,14 +104,59 @@ public_users.get('/author/:author',function (req, res) {
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  
+  const titleToSearch = req.params.title;
+
+  console.log("the title to search is : " + titleToSearch)
+
+  let findBookByTitle = function (titleToSearch) {
+    for (let key in books) {
+      if (books[key]["title"] === titleToSearch) {
+          return books[key];
+      }
+    }
+    return null; 
+  };
+  
+  let book = findBookByTitle(titleToSearch);
+  
+  if (book) {
+    console.log(book);
+    res.status(200).send(book);
+  } else {
+    console.log("Book not found.");
+    return res.status(404).json({message:"Not Book found"});
+  }
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  
+  const isbnToSearch = req.params.isbn;
+
+  console.log(isbnToSearch);
+
+  let findBookByISBN = function (isbnToSearch) {
+    for (let key in books) {
+      if (books[key]["ISBN-10"] === isbnToSearch) {
+          return books[key].reviews;
+      }
+    }
+    return null; 
+  };
+    
+  let reviews = findBookByISBN(isbnToSearch);
+
+  console.log(reviews)
+
+  if (reviews) {
+    console.log(reviews);
+    res.status(200).send(reviews);
+  } else {
+    console.log("Book not found.");
+    return res.status(404).json({message:"Not Book found"});
+  }
+
 });
 
 module.exports.general = public_users;
