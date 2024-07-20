@@ -33,9 +33,11 @@ public_users.post("/register", (req,res) => {
     if (!doesExist(username)) {
       // Add the new user to the users array
       users.push({"username": username, "password": password});
+      console.log(users)
       return res.status(200).json({message: `User ${username} successfully registered. Now you can login`});
     } else {
-        return res.status(404).json({message: `User ${username} already exists!`});
+      console.log(users)
+      return res.status(404).json({message: `User ${username} already exists!`});
     }
   }
 
