@@ -142,6 +142,12 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 // Delete a book review
 regd_users.delete ( "/auth/review/:isbn", (req, res) => {
 
+    const username = req.body.username;
+    const isbn = req.params.isbn;
+
+    console.log(isbn);
+    console.log(username)
+
         return res.status(501).json({message: "Yet to be implementyed..."});
 });
 
