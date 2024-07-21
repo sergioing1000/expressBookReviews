@@ -46,12 +46,32 @@ public_users.post("/register", (req,res) => {
 
 });
 
+
 // Get the book list available in the shop
-public_users.get('/', function (req, res) {
+public_users.get('/', async function (req, res) {
+  
+  async function fetchBooks (){
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const success = Math.random() > 0.4; // 60% chance of success, 40% chance of failure
 
+        if (success) {
+          resolve (books);
+        } else {
+          reject(new Error('Server Error: Failed to fetch books'));
+        }
+      },  Math.random() * 1000);
+   });
+  };
 
-  return res.status(200).send(JSON.stringify(books,null,4));
+  try{
 
+    const fethcedBooks = await fetchBooks();
+    res.status(200).send(JSON.stringify(fethcedBooks,null,4));
+
+  }catch (error){
+    res.status(500).send({ error: error.message });
+  }
   
 });
 
