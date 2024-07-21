@@ -142,8 +142,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 // Delete a book review
 regd_users.delete ( "/auth/review/:isbn", (req, res) => {
 
-
-
+        return res.status(501).json({message: "Yet to be implementyed..."});
 });
 
 module.exports.authenticated = regd_users;
