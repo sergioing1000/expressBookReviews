@@ -127,7 +127,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
         console.log(books);
 
-        return res.status(302).json({message: `the ${username} and the ISBN ${isbn } are valid and have been fopund`});
+        return res.status(302).json({message: `the ${username} and the ISBN ${isbn } are valid and have been found`});
       }
       else{
         return res.status(206).json({message: `the ${username} is valid but the ISBN ${isbn} is NOT VALID` });
@@ -146,9 +146,28 @@ regd_users.delete ( "/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn;
 
     console.log(isbn);
-    console.log(username)
+    console.log(username);
 
-        return res.status(501).json({message: "Yet to be implementyed..."});
+    const bookToBeDeletd = findBookByISBN(isbn);
+
+    console.log(bookToBeDeletd);
+
+    if (bookToBeDeletd){
+        console.log("The ISBN exists");
+
+        for (let reviewKey in bookToBeDeletd.reviews){
+            if (bookToBeDeletd.reviews[reviewKey].username === username) {
+                delete bookToBeDeletd.reviews[reviewKey];
+                return res.status(303).json({message: `The review from ${username} in the book with the isbn ${isbn} was deleted!`});
+                break; // Exit the loop after deleting the review
+            }
+        }
+
+    }else{
+        console.log("The ISBN DOES NOT EXIST");
+        return res.status(404).json({message: "The ISBN DOES NOT EXIST"});
+    }
+        
 });
 
 module.exports.authenticated = regd_users;
