@@ -76,83 +76,126 @@ public_users.get('/', async function (req, res) {
 });
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
+public_users.get('/isbn/:isbn',async function (req, res) {
   //Write your code here
   const isbnToSearch = req.params.isbn;
-
   console.log("ISBN ato be search is: " + isbnToSearch)
 
-  let findBookByISBN = function (isbnToSearch) {
-    for (let key in books) {
-      if (books[key]["ISBN-10"] === isbnToSearch) {
-          return books[key];
-      }
-    }
-    return null; 
+  async function findBookByISBN (isbnToSearch){
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const success = Math.random() > 0.4; // 60% chance of success, 40% chance of failure
+
+        if (success) {
+
+          for (let key in books) {
+            if (books[key]["ISBN-10"] === isbnToSearch) {
+              resolve (books[key]);
+            }
+          }
+          resolve (null); 
+          
+        } else {
+          reject(new Error('Server Error: Failed to fetch books'));
+        }
+      }, 1000);
+   });
   };
 
-  let book = findBookByISBN(isbnToSearch);
-
-  if (book) {
-    console.log(book);
-    res.status(200).send(book);
-  } else {
-    console.log("Book not found.");
-    return res.status(404).json({message:"Not Book found"});
+  try {
+    let book = await findBookByISBN(isbnToSearch);
+      if (book) {
+        console.log(book);
+        res.status(200).send(book);
+      } else {
+        res.status(404).send({message: "Book Not Found with the ISBN " + isbnToSearch});
+      }
+  } catch (error) {
+    res.status(500).send({ error: error.message });
   }
- });
+
+});
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
+public_users.get('/author/:author',async function (req, res) {
   const authorToSearch = req.params.author;
-
   console.log("the author to search is : " + authorToSearch)
-  
-  let findBookByAuthor = function (authorToSearch) {
-    for (let key in books) {
-      if (books[key]["author"] === authorToSearch) {
-          return books[key];
-      }
-    }
-    return null; 
+
+  async function findBookByAuthor (authorToSearch){
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const success = Math.random() > 0.4; // 60% chance of success, 40% chance of failure
+
+        if (success) {
+
+          for (let key in books) {
+            if (books[key]["author"] === authorToSearch) {
+              resolve (books[key]);
+            }
+          }
+          resolve (null); 
+          
+        } else {
+          reject(new Error('Server Error: Failed to fetch books'));
+        }
+      }, 1000);
+   });
   };
-  
-  let book = findBookByAuthor(authorToSearch);
-  
-  if (book) {
-    console.log(book);
-    res.status(200).send(book);
-  } else {
-    console.log("Book not found.");
-    return res.status(404).json({message:"Not Book found"});
+
+  try {
+    let book = await findBookByAuthor(authorToSearch);
+      if (book) {
+        console.log(book);
+        res.status(200).send(book);
+      } else {
+        res.status(404).send({message: "Book Not Found with the Author " + authorToSearch});
+      }
+  } catch (error) {
+    res.status(500).send({ error: error.message });
   }
+
 });
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
+public_users.get('/title/:title',async function (req, res) {
   
   const titleToSearch = req.params.title;
-
   console.log("the title to search is : " + titleToSearch)
 
-  let findBookByTitle = function (titleToSearch) {
-    for (let key in books) {
-      if (books[key]["title"] === titleToSearch) {
-          return books[key];
-      }
-    }
-    return null; 
+
+  async function findBookByTitle (titleToSearch){
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const success = Math.random() > 0.4; // 60% chance of success, 40% chance of failure
+
+        if (success) {
+
+          for (let key in books) {
+            if (books[key]["title"] === titleToSearch) {
+              resolve (books[key]);
+            }
+          }
+          resolve (null); 
+          
+        } else {
+          reject(new Error('Server Error: Failed to fetch books'));
+        }
+      }, 1000);
+   });
   };
-  
-  let book = findBookByTitle(titleToSearch);
-  
-  if (book) {
-    console.log(book);
-    res.status(200).send(book);
-  } else {
-    console.log("Book not found.");
-    return res.status(404).json({message:"Not Book found"});
+
+  try {
+    let book = await findBookByTitle(titleToSearch);
+      if (book) {
+        console.log(book);
+        res.status(200).send(book);
+      } else {
+        res.status(404).send({message: "Book Not Found with the title " + titleToSearch});
+      }
+  } catch (error) {
+    res.status(500).send({ error: error.message });
   }
+
 });
 
 //  Get book review
